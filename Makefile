@@ -1,6 +1,6 @@
 CC := gcc
 CFLAGS := -Wall -Wextra -Werror -std=c11 -Iinclude \
-	-Isrc/medicaments -Isrc/lot -Isrc/laboratory -Isrc/sales -Isrc/sele-item
+	-Isrc/medicaments -Isrc/lot -Isrc/laboratory -Isrc/sales -Isrc/sele-item -luuid
 BUILD_DIR := build
 BIN_DIR := bin
 TARGET := $(BIN_DIR)/app

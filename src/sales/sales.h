@@ -1,10 +1,13 @@
 #ifndef SALE_H
 #define SALE_H
 
+#include <uuid/uuid.h>
+
+
 typedef struct {
-    long id;
+    char id[37];
     char date[11];
-    long sales_id;
+    char sales_id[37];
     float total_sale_price;
 } Sale;
 
@@ -13,11 +16,16 @@ typedef struct SaleNode {
     struct SaleNode *next;
 } SaleNode;
 
+typedef struct {
+    struct SaleNode *head;
+    struct SaleNode *tail;
+} SaleList;
+
 void add_sale(Sale sale);
-void delete_sale(Sale sale);
-void get_sale(long id);
-void get_all_sales(void);
+void delete_sale(char id[37]);
+void get_sale(char id[37]);
+SaleNode* get_all_sales(void);
 void get_all_sales_by_laboratory_id(long laboratory_id);
-void get_sale_by_id(long id);
+void get_sale_by_id(char id[37]);
 
 #endif

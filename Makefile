@@ -1,12 +1,13 @@
 CC := gcc
 CFLAGS := -Wall -Wextra -Werror -std=c11 -Iinclude \
-	-Isrc/medicaments -Isrc/lot -Isrc/laboratory -Isrc/sales -Isrc/sele-item -luuid
+	-Isrc/medicaments -Isrc/lot -Isrc/laboratory -Isrc/sales -Isrc/sele-item -Isrc/_utils_ -luuid
 BUILD_DIR := build
 BIN_DIR := bin
 TARGET := $(BIN_DIR)/app
 TEST_TARGET := $(BIN_DIR)/test_app
 
 SRC := $(wildcard src/*.c) \
+	$(wildcard src/_utils_/*.c) \
 	$(wildcard src/medicaments/_logic_/*.c) \
 	$(wildcard src/lot/_logic_/*.c) \
 	$(wildcard src/laboratory/_logic_/*.c) \
@@ -31,7 +32,7 @@ $(BUILD_DIR)/%.o: src/%.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/test_%.o: tests/%.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -Isrc -c $< -o $@
 
 $(TEST_TARGET): $(LIB_OBJ) $(TEST_OBJ) | $(BIN_DIR)
 	$(CC) $(CFLAGS) $^ -o $@

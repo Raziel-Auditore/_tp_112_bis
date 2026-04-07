@@ -1,11 +1,17 @@
 #include <stdio.h>
 #include "./sales/sales.h"
-#include <uuid/uuid.h>
 
-int main() { 
-    printf("Welcome to the Pharmacy Management System !\n");
+#define CYAN    "\033[1;36m"
+#define RESET   "\033[0m"
 
-    delete_sale((char*)"123e4567-e89b-12d3-a456-426614174000");
+int main(void) {
+    printf("\n");
+    printf(CYAN "  ╔══════════════════════════════════════════╗\n");
+    printf("  ║   Pharmacy Management System  v1.0       ║\n");
+    printf("  ╚══════════════════════════════════════════╝" RESET "\n\n");
 
-     return 0;
+    get_all_sales(1);
+
+    printf("\n");
+    return 0;
 }

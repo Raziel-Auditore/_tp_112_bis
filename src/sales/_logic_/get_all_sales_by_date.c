@@ -1,6 +1,7 @@
 #include "../sales.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define GREEN   "\033[1;32m"
 #define RED     "\033[1;31m"
@@ -9,7 +10,7 @@
 #define DIM     "\033[2m"
 #define RESET   "\033[0m"
 
-SaleNode *get_all_sales(int list_sales) {
+SaleNode *get_all_sales_by_date(char date[11]) {
     FILE *file = fopen("storage/sales.txt", "r");
     if (file == NULL) {
         printf(RED "  [ERROR]" RESET " Could not open sales storage file.\n");
@@ -20,8 +21,10 @@ SaleNode *get_all_sales(int list_sales) {
     SaleNode *curr = NULL;
     char line[512];
     int count = 0;
+    int total = 0;
 
     while (fgets(line, sizeof(line), file) != NULL) {
+        total++;
         SaleNode *node = malloc(sizeof(SaleNode));
         if (node == NULL) {
             printf(RED "  [ERROR]" RESET " Memory allocation failed.\n");
@@ -37,23 +40,30 @@ SaleNode *get_all_sales(int list_sales) {
                           &node->data.total_sale_price);
         if (read != 4) {
             free(node);
-            return head;
+            continue;
         }
 
-        if (head == NULL) {
-            head = node;
-            curr = head;
+        if (strcmp(node->data.date, date) == 0) {
+            if (head == NULL) {
+                head = node;
+                curr = head;
+            } else {
+                curr->next = node;
+                curr = node;
+            }
+            count++;
         } else {
-            curr->next = node;
-            curr = node;
+            free(node);
         }
-        count++;
     }
     fclose(file);
 
-    if (list_sales == 1) {
-        printf(CYAN "  ┌── Sales List " DIM "(%d record%s)" RESET "\n", count, count > 1 ? "s" : "");
+    printf(CYAN "  ┌── Sales filtered by date: %s " DIM "(%d/%d)" RESET "\n", date, count, total);
 
+    if (count == 0) {
+        printf(DIM "  │" RESET "\n");
+        printf(YELLOW "  │  No sales found for this date." RESET "\n");
+    } else {
         SaleNode *it = head;
         int i = 1;
         while (it != NULL) {
@@ -66,11 +76,11 @@ SaleNode *get_all_sales(int list_sales) {
             it = it->next;
             i++;
         }
-
-        printf(DIM "  │" RESET "\n");
-        printf(DIM "  └──────────────────────────────────────────" RESET "\n");
-        printf(GREEN "  [OK]" RESET " %d sale%s loaded.\n", count, count > 1 ? "s" : "");
     }
+
+    printf(DIM "  │" RESET "\n");
+    printf(DIM "  └──────────────────────────────────────────" RESET "\n");
+    printf(GREEN "  [OK]" RESET " %d result%s.\n", count, count > 1 ? "s" : "");
 
     return head;
 }

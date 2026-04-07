@@ -24,8 +24,8 @@ typedef struct {
 void add_sale(Sale sale);
 void delete_sale(char id[37]);
 void get_sale(char id[37]);
-SaleNode* get_all_sales(void);
-void get_all_sales_by_laboratory_id(long laboratory_id);
+SaleNode* get_all_sales(int list_sales);
+SaleNode* get_all_sales_by_date(char date[11]);
 void get_sale_by_id(char id[37]);
 
 #endif
